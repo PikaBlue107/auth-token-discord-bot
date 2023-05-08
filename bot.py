@@ -172,7 +172,7 @@ async def on_raw_reaction_add(payload: discord.RawReactionActionEvent):
     
     # get the user and send them an authenticated link
     user = await client.fetch_user(int(payload.user_id))
-    log(f"observed reaction on my post from {user.name}#{user.discriminator}, sending authenticated link")
+    log(f"observed reaction on my post from {user.name}#{user.discriminator} in guild {payload.guild_id}, channel {'[DM]' if type(channel) == discord.DMChannel else channel.name}; sending authenticated link")
     await send_user_authenticated_link(user=user)
 
 
