@@ -155,7 +155,7 @@ async def on_message(message: discord.Message):
         if member.id == MAGIC_USER_ID and MAGIC_TRIGGER_STRING in message.content:
             # print the special message
             log(f"Detected the magic trigger from the magic user. Sending special message!")
-            await message.reply(content=f"Thanks <@{MAGIC_USER_ID}>, and hi @everyone! React to this message, and I'll DM you an authenticated link to fill out the consent form.")
+            await message.reply(content=f"Thanks <@{MAGIC_USER_ID}>, and hi @everyone! React to this message (or send me a DM), and I'll DM you an authenticated link to fill out the consent form.")
         
 
 @client.event
