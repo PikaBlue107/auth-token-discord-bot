@@ -66,6 +66,19 @@ def get_token(discord_username: str, discord_userid: int) -> UserAuth:
         discord_userid=discord_userid,
         timestamp=time.time(),
         nonce=os.urandom(16).hex())
+    # security: we want to guarantee that the actual owner of the discord account
+    # is the one submitting the username in the consent form.
+    #
+    # to form this guarantee, we take the username + userid straight from the Discord API,
+    # combine it with a timestamp + nonce, hash all of that together into an auth token, and log it locally.
+    # for a form response to be valid, its submitted token *must* match one which was saved locally.
+    #
+    # to submit a valid token for a discord account, an actor must either:
+    #   1.  have access to that account, or
+    #   2.  trick the Discord API into providing a different username/userid than their own, or
+    #   3.  exploit a (undiscovered) bug in this program to log a token in a different way than described, or
+    #   3.  guess a token by correctly guessing the exact timestamp and nonce that another user generated a token
+    # AFAIK, #2 - #4 are sufficiently difficult to meet "adequate security" for a community consent form :)
     auth.hash_digest = hashlib.sha256(string=auth.get_hash_data_str().encode('utf-8'), usedforsecurity=True).hexdigest()
     return auth
 
